@@ -97,8 +97,13 @@ export default function OnboardingScreen({ onComplete }: OnboardingScreenProps) 
                 className="p-4 rounded-xl text-left transition-all"
                 style={{
                   background: '#1C1C1C',
-                  border: isSelected ? `1px solid ${career.accentColor}` : '0.5px solid #2A2A2A',
-                  borderLeft: `3px solid ${career.accentColor}`,
+                  borderStyle: 'solid',
+                  borderColor: '#2A2A2A',
+                  borderTopWidth: '0.5px',
+                  borderRightWidth: '0.5px',
+                  borderBottomWidth: '0.5px',
+                  borderLeftWidth: isSelected ? '3px' : '0.5px',
+                  borderLeftColor: isSelected ? career.accentColor : '#2A2A2A',
                 }}
               >
                 <div 
