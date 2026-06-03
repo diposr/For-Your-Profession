@@ -1,10 +1,12 @@
 import type { Metadata, Viewport } from 'next'
 import { Analytics } from '@vercel/analytics/next'
 import './globals.css'
+import LandingSplash from '@/components/landing-splash'
+import LandingSplashController from '@/components/landing-splash-controller'
 
 export const metadata: Metadata = {
   title: 'FYP — For Your Profession',
-  description: 'The Most Useful FYP - Turn doom scrolling into career capital',
+  description: 'Turn Doom Scrolling into Career Capital. The FYP app transforms your feed into professional development with career tracks, quests, and progress tracking.',
   generator: 'v0.app',
   icons: {
     icon: [
@@ -23,10 +25,30 @@ export const metadata: Metadata = {
     ],
     apple: '/apple-icon.png',
   },
+  openGraph: {
+    title: 'FYP — For Your Profession',
+    description: 'Turn Doom Scrolling into Career Capital. Transform your feed into professional growth.',
+    type: 'website',
+    url: 'https://for-your-profession.vercel.app',
+    images: [
+      {
+        url: '/og-image.png',
+        width: 1200,
+        height: 630,
+        alt: 'FYP — Turn Doom Scrolling into Career Capital',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'FYP — For Your Profession',
+    description: 'Turn Doom Scrolling into Career Capital',
+    images: ['/og-image.png'],
+  },
 }
 
 export const viewport: Viewport = {
-  themeColor: '#0D1B2A',
+  themeColor: '#131313',
   width: 'device-width',
   initialScale: 1,
   maximumScale: 1,
@@ -47,7 +69,17 @@ export default function RootLayout({
         />
       </head>
       <body className="font-sans antialiased">
+        {/* Server-rendered landing splash - visible immediately on first paint */}
+        <div id="landing-splash">
+          <LandingSplash />
+        </div>
+
+        {/* Client-side controller that hides splash after hydration */}
+        <LandingSplashController />
+
+        {/* Main app content */}
         {children}
+
         <Analytics />
       </body>
     </html>
