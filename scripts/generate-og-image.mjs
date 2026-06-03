@@ -49,11 +49,8 @@ async function generateOGImage() {
         </text>
 
         <!-- Tagline -->
-        <text x="${WIDTH / 2}" y="350" text-anchor="middle" class="tagline" fill="${SUBTEXT_COLOR}" font-size="28">
-          Turn Doom Scrolling into
-        </text>
-        <text x="${WIDTH / 2}" y="390" text-anchor="middle" class="tagline" fill="${TEXT_COLOR}" font-size="32">
-          Career Capital
+        <text x="${WIDTH / 2}" y="380" text-anchor="middle" class="tagline" fill="${TEXT_COLOR}" font-size="36">
+          Scroll Smarter, Learn Faster
         </text>
 
         <!-- Accent line -->
