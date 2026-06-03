@@ -230,7 +230,7 @@ export default function FYPApp() {
         }}
       >
         {/* Content Area - Tab Conditional Rendering */}
-        <main className="flex-1 overflow-y-auto scrollbar-hide">
+        <main className="flex-1 min-h-0 overflow-y-auto scrollbar-hide">
           {/* Feed Tab */}
           {activeTab === "feed" && (
             <FeedScreen careerTrack={selectedCareer!} isFullscreen={false} />
@@ -253,7 +253,7 @@ export default function FYPApp() {
 
       {/* Mobile: fullscreen, no frame */}
       <div className="md:hidden flex flex-col w-full min-h-screen">
-        <main className="flex-1 overflow-y-auto scrollbar-hide">
+        <main className="flex-1 min-h-0 overflow-y-auto scrollbar-hide">
           {/* Feed Tab */}
           {activeTab === "feed" && (
             <FeedScreen careerTrack={selectedCareer!} isFullscreen />
