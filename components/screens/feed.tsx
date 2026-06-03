@@ -6,6 +6,7 @@ import { getCareerContent, FeedItem } from "@/lib/content"
 
 interface FeedScreenProps {
   careerTrack: string
+  isFullscreen?: boolean
 }
 
 const careerLabels: Record<string, string> = {
@@ -15,7 +16,7 @@ const careerLabels: Record<string, string> = {
   "product-manager": "Product Manager",
 }
 
-export default function FeedScreen({ careerTrack }: FeedScreenProps) {
+export default function FeedScreen({ careerTrack, isFullscreen = false }: FeedScreenProps) {
   const [currentIndex, setCurrentIndex] = useState(0)
   const [filter, setFilter] = useState<"all" | "verified">("all")
   const [bookmarkedIds, setBookmarkedIds] = useState<Set<string>>(new Set())
@@ -484,11 +485,12 @@ export default function FeedScreen({ careerTrack }: FeedScreenProps) {
 
   return (
     <div
-      className="mx-auto relative overflow-hidden"
+      className={isFullscreen ? "relative w-full min-h-screen overflow-hidden" : "mx-auto relative overflow-hidden"}
       style={{
-        maxWidth: '390px',
-        height: '844px',
-        background: '#0A0A0A'
+        ...(isFullscreen
+          ? { background: '#0A0A0A' }
+          : { maxWidth: '390px', height: '844px', background: '#0A0A0A' }
+        )
       }}
     >
       {/* Card Counter */}
@@ -497,7 +499,7 @@ export default function FeedScreen({ careerTrack }: FeedScreenProps) {
       {/* Scroll Snap Container */}
       <div
         ref={scrollContainerRef}
-        className="h-full overflow-y-scroll snap-y snap-mandatory scrollbar-hide"
+        className={isFullscreen ? "min-h-screen overflow-y-scroll snap-y snap-mandatory scrollbar-hide" : "h-full overflow-y-scroll snap-y snap-mandatory scrollbar-hide"}
         style={{
           scrollBehavior: 'smooth'
         }}

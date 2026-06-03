@@ -68,15 +68,17 @@ export default function FYPApp() {
   // ==============================
   // 2. ONBOARDING FLOW
   // ==============================
+  // On mobile (<md): render fullscreen — OnboardingScreen already uses min-h-screen + w-full.
+  // On desktop (>=md): wrap in a centered 390x844 phone frame for a prototype demo look.
   if (!hasOnboarded) {
     return (
       <div
-        className="min-h-screen w-full flex items-center justify-center px-4"
+        className="min-h-screen w-full md:flex md:items-center md:justify-center md:px-4"
         style={{ background: '#0A0A0A' }}
       >
-        {/* Centered Mobile Frame for Onboarding */}
+        {/* Desktop-only centered Mobile Frame */}
         <div
-          className="w-full max-w-sm shadow-2xl overflow-hidden"
+          className="hidden md:block w-full max-w-sm shadow-2xl overflow-hidden"
           style={{
             width: '390px',
             height: '844px',
@@ -88,6 +90,11 @@ export default function FYPApp() {
         >
           <OnboardingScreen onComplete={completeOnboarding} />
         </div>
+
+        {/* Mobile: fullscreen, no frame */}
+        <div className="md:hidden w-full min-h-screen">
+          <OnboardingScreen onComplete={completeOnboarding} />
+        </div>
       </div>
     )
   }
@@ -95,14 +102,15 @@ export default function FYPApp() {
   // ==============================
   // 3. MAIN DASHBOARD - Tab-Based Navigation
   // ==============================
+  // Same responsive strategy as onboarding.
   return (
     <div
-      className="min-h-screen w-full flex items-center justify-center px-4 py-8"
+      className="min-h-screen w-full md:flex md:items-center md:justify-center md:px-4 md:py-8"
       style={{ background: '#0A0A0A' }}
     >
-      {/* Centered Mobile Frame */}
+      {/* Desktop-only centered Mobile Frame */}
       <div
-        className="w-full max-w-sm flex flex-col shadow-2xl overflow-hidden"
+        className="hidden md:flex w-full max-w-sm flex-col shadow-2xl overflow-hidden"
         style={{
           width: '390px',
           height: '844px',
@@ -116,17 +124,40 @@ export default function FYPApp() {
         <main className="flex-1 overflow-y-auto scrollbar-hide">
           {/* Feed Tab */}
           {activeTab === "feed" && (
-            <FeedScreen careerTrack={selectedCareer!} />
+            <FeedScreen careerTrack={selectedCareer!} isFullscreen={false} />
           )}
 
           {/* Quest Tab - Gamification */}
           {activeTab === "quest" && (
-            <QuestScreen careerTrack={selectedCareer!} />
+            <QuestScreen careerTrack={selectedCareer!} isFullscreen={false} />
           )}
 
           {/* Profile Tab */}
           {activeTab === "profile" && (
-            <ProfileScreen careerTrack={selectedCareer!} />
+            <ProfileScreen careerTrack={selectedCareer!} isFullscreen={false} />
+          )}
+        </main>
+
+        {/* Bottom Navigation Bar */}
+        <BottomNav activeTab={activeTab} onTabChange={setActiveTab} />
+      </div>
+
+      {/* Mobile: fullscreen, no frame */}
+      <div className="md:hidden flex flex-col w-full min-h-screen">
+        <main className="flex-1 overflow-y-auto scrollbar-hide">
+          {/* Feed Tab */}
+          {activeTab === "feed" && (
+            <FeedScreen careerTrack={selectedCareer!} isFullscreen />
+          )}
+
+          {/* Quest Tab - Gamification */}
+          {activeTab === "quest" && (
+            <QuestScreen careerTrack={selectedCareer!} isFullscreen />
+          )}
+
+          {/* Profile Tab */}
+          {activeTab === "profile" && (
+            <ProfileScreen careerTrack={selectedCareer!} isFullscreen />
           )}
         </main>
 

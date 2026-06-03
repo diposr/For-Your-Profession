@@ -5,6 +5,7 @@ import LandingSplash from '@/components/landing-splash'
 import LandingSplashController from '@/components/landing-splash-controller'
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://for-your-profession.vercel.app'),
   title: 'FYP — For Your Profession',
   description: 'Turn Doom Scrolling into Career Capital. The FYP app transforms your feed into professional development with career tracks, quests, and progress tracking.',
   generator: 'v0.app',

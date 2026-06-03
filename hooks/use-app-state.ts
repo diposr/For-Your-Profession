@@ -18,6 +18,25 @@ const DEFAULT_STATE: AppState = {
   selectedCareer: null,
 }
 
+const VALID_TABS: readonly Tab[] = ["feed", "quest", "profile"] as const
+
+/**
+ * Runtime guard: validates the shape of parsed localStorage before adopting it.
+ * Protects against corrupted storage, manual edits, or stale schema from a
+ * prior app version. Returns false on any mismatch — caller should fall back
+ * to DEFAULT_STATE.
+ */
+function isValidAppState(s: unknown): s is AppState {
+  if (!s || typeof s !== "object") return false
+  const obj = s as Record<string, unknown>
+  return (
+    typeof obj.activeTab === "string" &&
+    VALID_TABS.includes(obj.activeTab as Tab) &&
+    typeof obj.hasOnboarded === "boolean" &&
+    (obj.selectedCareer === null || typeof obj.selectedCareer === "string")
+  )
+}
+
 /**
  * Custom hook for managing app-wide state with localStorage persistence.
  * Handles tab navigation, onboarding status, and career selection.
@@ -31,8 +50,15 @@ export function useAppState() {
     try {
       const storedState = localStorage.getItem(STORAGE_KEY)
       if (storedState) {
-        const parsedState = JSON.parse(storedState)
-        setState(parsedState)
+        const parsedState: unknown = JSON.parse(storedState)
+        if (isValidAppState(parsedState)) {
+          setState(parsedState)
+        } else {
+          console.warn(
+            "[FYP] Stored app state failed validation, using defaults:",
+            parsedState
+          )
+        }
       }
     } catch (error) {
       console.error("Failed to load app state from localStorage:", error)
@@ -50,6 +76,15 @@ export function useAppState() {
       }
     }
   }, [state, isHydrated])
+
+  const clearCorruptStorage = () => {
+    try {
+      localStorage.removeItem(STORAGE_KEY)
+      setState(DEFAULT_STATE)
+    } catch (error) {
+      console.error("Failed to clear corrupt app state:", error)
+    }
+  }
 
   const setActiveTab = (tab: Tab) => {
     setState((prev) => ({ ...prev, activeTab: tab }))
@@ -74,6 +109,7 @@ export function useAppState() {
     setActiveTab,
     completeOnboarding,
     resetAppState,
+    clearCorruptStorage,
     isHydrated,
   }
 }
